@@ -1,6 +1,8 @@
-runpod
-pillow
-torch
-diffusers
-transformers
-accelerate
+runpod~=1.7.6
+diffusers>=0.30.0
+transformers>=4.45.0
+accelerate>=0.27.0
+peft>=0.12.0
+huggingface-hub>=0.24.0
+numpy
+Pillow
