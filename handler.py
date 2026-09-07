@@ -8,7 +8,12 @@ import runpod
 MODEL_PATH = "/models"
 
 print("Initializing vLLM Engine...")
-llm = LLM(model=MODEL_PATH)
+try:
+    llm = LLM(model=MODEL_PATH)
+except Exception as e:
+    print(f"CRITICAL ERROR LOADING MODEL: {e}")
+    raise
+
 sampling_params = SamplingParams(max_tokens=512, temperature=0.5)
 print("Engine Ready.")
 
