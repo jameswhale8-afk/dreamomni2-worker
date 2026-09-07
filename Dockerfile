@@ -1,8 +1,26 @@
 FROM runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404
+
 WORKDIR /
-RUN apt-get update && apt-get install -y git wget && rm -rf /var/lib/apt/lists/*
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Download the medical model into the image
+RUN pip install huggingface-hub && \
+    huggingface-cli download \
+        --resume-download \
+        --local-dir-use-symlinks False \
+        Na0s/Llama-3.2-3B-Medical-Chatbot-LoRA-FT \
+        --local-dir /models
+
+# Copy handler
 COPY handler.py .
-EXPOSE 8080
+
 CMD ["python", "-u", "/handler.py"]
