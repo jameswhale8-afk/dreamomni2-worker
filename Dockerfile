@@ -2,10 +2,15 @@ FROM runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404
 
 WORKDIR /
 
-# Install the system-level tools required to build the AI engine
+# Install system-level tools including python development headers
 RUN apt-get update && apt-get install -y \
     build-essential \
+    python3-dev \
+    libaio-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Upgrade pip to ensure compatibility with modern wheels
+RUN python -m pip install --upgrade pip
 
 # Install Python dependencies
 COPY requirements.txt .
