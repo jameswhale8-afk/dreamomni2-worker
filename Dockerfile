@@ -2,17 +2,23 @@ FROM runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404
 
 WORKDIR /
 
-# Install system-level tools including python development headers
+# Install system tools INCLUDING the Rust compiler (Critical for vLLM)
 RUN apt-get update && apt-get install -y \
     build-essential \
     python3-dev \
     libaio-dev \
+    curl \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip to ensure compatibility with modern wheels
+# Install Rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Prepare Python environment
 RUN python -m pip install --upgrade pip
 
-# Install Python dependencies
+# Install AI packages
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
