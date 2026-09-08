@@ -1,5 +1,4 @@
 FROM runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404
-
 WORKDIR /
 
 RUN apt-get update && apt-get install -y \
@@ -14,6 +13,8 @@ RUN python -m pip install --upgrade pip
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+RUN pip install "runpod==1.10.1"
 
 RUN pip install huggingface-hub && \
     huggingface-cli download \
