@@ -1,4 +1,4 @@
-FROM runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404
+FROM runpod/pytorch:1.0.2-cu124-torch240-ubuntu2204
 WORKDIR /
 
 RUN apt-get update && apt-get install -y \
@@ -11,10 +11,9 @@ RUN apt-get update && apt-get install -y \
 
 RUN python -m pip install --upgrade pip
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-RUN pip install "runpod==1.10.1"
+# Install all dependencies explicitly (bypasses requirements.txt build issues)
+RUN pip install --no-cache-dir runpod==1.10.1 accelerate
+RUN pip install --no-cache-dir vllm==0.6.3.post1 --extra-index-url https://download.pytorch.org/whl/cu124
 
 RUN pip install huggingface-hub && \
     huggingface-cli download \
