@@ -1,1 +1,3 @@
-runpod>=1.10.1 vllm>=0.6.0 accelerate
+runpod==1.10.1
+vllm>=0.6.0
+accelerate
